@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Slider</title>
+</head>
+  <style>
+
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: black;
+      
+    }
+    img{
+      border: 10px solid white;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+     
+    }
+  </style>
+<body>
+  
+   <img id="slider" src="1.png" alt="" >
+
+  <script>
+    let images = ["1.png", "2.png", "3.png", "4.png"];
+    let num = 0;
+    let img = document.getElementById("slider");
+
+    setInterval(function () {
+      num = (num + 1) % images.length;
+      img.setAttribute("src", images[num]);
+    }, 2000);
+  </script>
+</body>
+</html>
