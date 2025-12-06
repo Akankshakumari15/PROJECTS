@@ -1,0 +1,40 @@
+#parent{
+    height: 50px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: red;
+    margin-bottom: 3px;
+    flex-wrap: wrap;
+}
+#parent div{
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+ul li{
+    display: inline-block;
+    margin-top: 1px;
+    justify-content: baseline;
+    font-size: 16px;
+    color: white;
+    margin: 12px;
+}
+input{
+    color: white;
+    background-color: red;
+    font-size: 18px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+input:hover{
+    background-color: black;
+    transition: 3s;
+}
