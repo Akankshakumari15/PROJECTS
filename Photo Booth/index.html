@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Photo Strip Booth</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="photo-booth">
+    <div class="preview">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas"></canvas>
+    </div>
+    <div class="controls">
+      <button class="btn snapshot" onclick="startPhotoStrip()">📸 Start Strip</button>
+      <button class="btn download" id="downloadBtn" onclick="downloadStrip()" disabled>⬇️ Download Strip</button>
+    </div>
+
+    <div class="status" id="statusMsg">Click "Start Strip" to take 3 photos.</div>
+
+    <div class="gallery">
+      <h3>📷 Gallery</h3>
+      <div class="gallery-grid" id="gallery"></div>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const gallery = document.getElementById('gallery');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const statusMsg = document.getElementById('statusMsg');
+
+    let stream;
+    let snapshots = [];
+
+    async function startCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        video.srcObject = stream;
+        canvas.style.display = 'none';
+        video.style.display = 'block';
+      } catch (e) {
+        alert('Camera access denied: ' + e.message);
+      }
+    }
+
+    async function startPhotoStrip() {
+      snapshots = [];
+      downloadBtn.disabled = true;
+      statusMsg.textContent = "Taking 3 photos... Please hold still!";
+
+      for (let i = 1; i <= 3; i++) {
+        await wait(2000);
+        const photo = takeSnapshotToData();
+        snapshots.push(photo);
+        addToGallery(photo);
+        statusMsg.textContent = `Captured photo ${i} of 3...`;
+      }
+
+      statusMsg.textContent = "Photo strip ready!";
+      downloadBtn.disabled = false;
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function takeSnapshotToData() {
+      const ctx = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/png');
+    }
+
+    function addToGallery(src) {
+      const img = new Image();
+      img.src = src;
+      img.title = "Click to download";
+      img.alt = "Captured photo";
+      img.onclick = () => {
+        const link = document.createElement('a');
+        link.href = img.src;
+        link.download = 'photo.png';
+        link.click();
+      };
+      gallery.prepend(img);
+    }
+
+    function downloadStrip() {
+      if (snapshots.length !== 3) {
+        alert("Please take 3 photos first.");
+        return;
+      }
+
+      // Create a new canvas to stack 3 images vertically
+      const img = new Image();
+      img.onload = () => {
+        const stripCanvas = document.createElement('canvas');
+        stripCanvas.width = img.width;
+        stripCanvas.height = img.height * 3;
+
+        const ctx = stripCanvas.getContext('2d');
+
+        snapshots.forEach((src, i) => {
+          const tempImg = new Image();
+          tempImg.onload = () => {
+            ctx.drawImage(tempImg, 0, i * img.height);
+            if (i === 2) {
+              const link = document.createElement('a');
+              link.href = stripCanvas.toDataURL('image/png');
+              link.download = 'photo-strip.png';
+              link.click();
+              statusMsg.textContent = "Photo strip downloaded!";
+            }
+          };
+          tempImg.src = src;
+        });
+      };
+      img.src = snapshots[0]; // Load first to get width/height
+    }
+
+    startCamera();
+  </script>
+</body>
+</html>
