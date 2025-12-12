@@ -1,0 +1,44 @@
+body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+#parent {
+  width: 340px;
+  height: 220px;
+  border: 2px solid black;
+  perspective: 1000px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+#parent:hover .card {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.front img, .back img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* instead of 'cover' */
+  image-rendering: crisp-edges ; /* Or one of the values below */
+}
+
+.back {
+  transform: rotateY(180deg);
+}
