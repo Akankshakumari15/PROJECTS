@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XYZ Name | Portfolio</title>
+  <style>
+    /* ========== GLOBAL STYLES ========== */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #222;
+      --accent-color: #0077ff;
+      --card-bg: #f4f4f4;
+    }
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f5f5f5;
+      --accent-color: #4dabf7;
+      --card-bg: #1e1e1e;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, var(--bg-color), #e9f2ff);
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--bg-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      z-index: 1000;
+    }
+    header h1 { font-size: 1.5rem; }
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 3px;
+    }
+    nav a.active {
+      color: var(--accent-color);
+    }
+    nav a.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: var(--accent-color);
+      border-radius: 2px;
+    }
+
+    .toggle-btn {
+      cursor: pointer;
+      border: none;
+      background: var(--accent-color);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .typing {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      font-weight: bold;
+      border-right: 2px solid var(--accent-color);
+      display: inline-block;
+      padding-right: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .btn {
+      background: var(--accent-color);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 1rem;
+      display: inline-block;
+      margin-top: 1.5rem;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #0056cc;
+    }
+    /* Education Timeline */
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+}
+.timeline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-color);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 1.5rem 2rem;
+}
+.timeline-item:nth-child(odd) {
+  left: 0;
+  text-align: right;
+}
+.timeline-item:nth-child(even) {
+  left: 50%;
+}
+.timeline-content {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.4s;
+}
+.timeline-content:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 0 15px var(--accent-color);
+}
+.timeline-content h3 {
+  margin: 0;
+}
+.timeline-content .date {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  z-index: 1;
+}
+.timeline-item:nth-child(odd)::before {
+  right: -10px;
+}
+.timeline-item:nth-child(even)::before {
+  left: -10px;
+}
+
+/* Mobile responsive timeline */
+@media (max-width: 768px) {
+  .timeline::after {
+    left: 20px;
+  }
+  .timeline-item {
+    width: 100%;
+    padding-left: 3rem;
+    text-align: left !important;
+    left: 0 !important;
+  }
+  .timeline-item::before {
+    left: 0;
+  }
+}
+
+    /* Skills */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .skill {
+      background: var(--accent-color);
+      color: white;
+      padding: 0.7rem 1.2rem;
+      border-radius: 20px;
+      transition: transform 0.3s;
+    }
+    .skill:hover {
+      transform: scale(1.1);
+    }
+
+    /* Projects */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .project-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .project-card h3 {
+      margin: 0.8rem;
+    }
+    .project-card p {
+      margin: 0 0.8rem 1rem;
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+    }
+
+    /* Contact */
+    .contact { text-align: center; }
+    .contact a {
+      margin: 0 1rem;
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: var(--accent-color);
+      transition: color 0.3s;
+    }
+    .contact a:hover {
+      color: #0056cc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+    }
+
+    /* Scroll To Top Button */
+    #toTop {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: none;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1>XYZ Name</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="toggle-btn" onclick="toggleTheme()">🌙</button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <h1>Hello, I'm XYZ Name</h1>
+    <p class="typing"></p>
+    <a href="#projects" class="btn">View My Work</a>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p style="text-align:center; max-width:700px; margin:auto;">
+      Hi! I'm XYZ Name, a web developer who loves building clean, modern, and user-friendly websites. 
+      I specialize in front-end development and creative designs.
+    </p>
+  </section>
+
+  <!-- ===== EDUCATION ===== -->
+<section id="education">
+  <h2>Education</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h3>B.Tech in Computer Science</h3>
+        <span class="date">2022 – 2026</span>
+        <p>XYZ Institute of Technology</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h3>12th Standard</h3>
+        <span class="date">2020 – 2022</span>
+        <p>ABC Senior Secondary School</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <h3>10th Standard</h3>
+        <span class="date">2018 – 2020</span>
+        <p>DEF High School</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-list">
+      <span class="skill">HTML</span>
+      <span class="skill">CSS</span>
+      <span class="skill">JavaScript</span>
+      <span class="skill">React</span>
+      <span class="skill">Git</span>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x150" alt="Project 1">
+        <h3>Project One</h3>
+        <p>Brief description about the project.</p>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x150" alt="Project 2">
+        <h3>Project Two</h3>
+        <p>Brief description about the project.</p>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/400x150" alt="Project 3">
+        <h3>Project Three</h3>
+        <p>Brief description about the project.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <div class="contact">
+      <p>Let's connect! 👇</p>
+      <a href="mailto:xyz@example.com">Email</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 XYZ Name | All Rights Reserved</p>
+  </footer>
+
+  <!-- Scroll To Top Button -->
+  <button id="toTop">↑</button>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Dark/Light Mode Toggle
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute("data-theme") === "dark") {
+        body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "light");
+      } else {
+        body.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    // Load saved theme
+    window.onload = () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.setAttribute("data-theme", "dark");
+      }
+    };
+
+    // Typing Effect
+    const typingElement = document.querySelector(".typing");
+    const words = ["Web Developer", "Designer", "Creator", "Learner"];
+    let wordIndex = 0, charIndex = 0, deleting = false;
+    function typeEffect() {
+      let currentWord = words[wordIndex];
+      if (!deleting) {
+        typingElement.textContent = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentWord.length) {
+          deleting = true;
+          setTimeout(typeEffect, 1500);
+          return;
+        }
+      } else {
+        typingElement.textContent = currentWord.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+        }
+      }
+      setTimeout(typeEffect, deleting ? 80 : 120);
+    }
+    typeEffect();
+
+    // Scroll Animations
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(section => {
+      if (!section.classList.contains("hero")) observer.observe(section);
+    });
+
+    // Navbar Active Highlight
+    const navLinks = document.querySelectorAll("nav a");
+    const sectionIds = Array.from(navLinks).map(link => document.querySelector(link.getAttribute("href")));
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sectionIds.forEach(section => {
+        const sectionTop = section.offsetTop - 60;
+        if (scrollY >= sectionTop) current = section.getAttribute("id");
+      });
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active");
+        }
+      });
+    });
+
+    // Scroll To Top Button
+    const toTop = document.getElementById("toTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    });
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  </script>
+
+</body>
+</html>
